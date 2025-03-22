@@ -1,0 +1,46 @@
+# Staging environment values
+services:
+  - name: blog-service
+    replicas: 2
+    containerPort: 8080
+    image:
+      repository: aryog/blog-service
+      tag: "1.0" # Add staging Tag
+      pullPolicy: Always
+    service:
+      type: ClusterIP
+      port: 80
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: staging
+      - name: LOG_LEVEL
+        value: INFO
+  - name: course-service
+    replicas: 2
+    containerPort: 8080
+    image:
+      repository: aryog/course-service
+      tag: "1.0" # Add staging Tag 
+      pullPolicy: Always
+    service:
+      type: ClusterIP
+      port: 80
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 200m
+        memory: 256Mi
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: staging
+      - name: LOG_LEVEL
+        value: INFO

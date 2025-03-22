@@ -1,0 +1,59 @@
+# Production environment values
+
+services:
+  - name: blog-service
+    replicas: 3
+    image:
+      tag: 1.0
+      pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: prod
+      - name: LOG_LEVEL
+        value: WARN
+
+  - name: course-service
+    replicas: 3
+    image:
+      tag: 1.0
+      pullPolicy: IfNotPresent
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+    env:
+      - name: SPRING_PROFILES_ACTIVE
+        value: prod
+      - name: LOG_LEVEL
+        value: WARN
+
+ingress:
+  host: aryalyogesh.com.np
+  tls:
+    - hosts:
+        - aryalyogesh.com.np
+      secretName: prod-tls-secret
+
+# Enable autoscaling for production
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 75
+  targetMemoryUtilizationPercentage: 75
+
+# Enable service account for production
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/education-microservice-role

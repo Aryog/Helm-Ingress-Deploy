@@ -1,0 +1,18 @@
+{{- range .Values.services }}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "education-microservice.fullname" $ }}-{{ .name }}-test-connection"
+  labels:
+    {{- include "education-microservice.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ .name }}:{{ .service.port | default 80 }}']
+  restartPolicy: Never
+{{- end }}

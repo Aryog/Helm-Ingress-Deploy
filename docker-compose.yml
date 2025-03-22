@@ -1,0 +1,16 @@
+
+version: "3.8"
+
+services:
+  blog-service:
+    image: aryog/blog-service:1.0
+    build:
+      context: ./blog-service
+      dockerfile: Dockerfile
+
+  course-service:
+    image: aryog/course-service:1.0
+    build:
+      context: ./course-service
+      dockerfile: Dockerfile
+

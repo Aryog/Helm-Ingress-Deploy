@@ -1,0 +1,18 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To access your services:
+
+{{- if .Values.ingress.enabled }}
+  You can access your services at:
+  {{- range .Values.ingress.paths }}
+  - {{ .path }} via http://{{ $.Values.ingress.host }}{{ .path }}
+  {{- end }}
+{{- else }}
+  Get the application URLs by running these commands:
+  {{- range .Values.services }}
+  - {{ .name }}: kubectl port-forward svc/{{ .name }} {{ .service.port }}:{{ .service.port }}
+    Then access http://localhost:{{ .service.port }}
+  {{- end }}
+{{- end }}

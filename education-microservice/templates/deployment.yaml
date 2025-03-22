@@ -1,0 +1,37 @@
+{{- range .Values.services }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .name }}-deployment
+  labels:
+    app: {{ .name }}
+    {{- include "education-microservice.labels" $ | nindent 4 }}
+spec:
+  replicas: {{ .replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .name }}
+    spec:
+      containers:
+        - name: {{ .name }}
+          image: "{{ .image.repository }}:{{ .image.tag }}"
+          imagePullPolicy: {{ .image.pullPolicy | default "IfNotPresent" }}
+          ports:
+            - containerPort: {{ .containerPort | default 8080 }}
+          {{- if .resources }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+          {{- end }}
+          {{- if .env }}
+          env:
+            {{- range .env }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+            {{- end }}
+          {{- end }}
+{{- end }}

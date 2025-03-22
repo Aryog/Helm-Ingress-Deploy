@@ -1,0 +1,18 @@
+{{- range .Values.services }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .name }}
+  labels:
+    app: {{ .name }}
+    {{- include "education-microservice.labels" $ | nindent 4 }}
+spec:
+  type: {{ .service.type | default "ClusterIP" }}
+  selector:
+    app: {{ .name }}
+  ports:
+    - protocol: TCP
+      port: {{ .service.port | default 80 }}
+      targetPort: {{ .containerPort | default 8080 }}
+{{- end }}

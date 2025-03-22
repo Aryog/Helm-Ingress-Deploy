@@ -1,0 +1,6 @@
+apiVersion: v2
+name: education-microservice
+description: A Helm chart for Education Microservices Platform
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
